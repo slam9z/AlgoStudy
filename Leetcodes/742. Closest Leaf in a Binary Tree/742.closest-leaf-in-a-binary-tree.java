@@ -8,8 +8,7 @@
  * }
  */
 class Solution {
-    public int widthOfBinaryTree(TreeNode root) {
-        if (root == null) return root;
+    public int findClosestLeaf(TreeNode root, int k) {
         
     }
 }
