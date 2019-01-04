@@ -1,3 +1,5 @@
+import java.util.ArrayDeque;
+
 /*
  * @lc app=leetcode id=536 lang=java
  *
@@ -50,9 +52,49 @@
  *     TreeNode right;
  *     TreeNode(int x) { val = x; }
  * }
+ * 
+ * Time Complexity: O(n)
+ * Space Complexity: O(n)
+ * 
  */
 class Solution {
     public TreeNode str2tree(String s) {
-        
+        if (s == null || s.length() == 0) return null;
+        Deque<TreeNode> deque = new ArrayDeque<>();
+        int sign = 1;
+        int index = 0, N = s.length();
+        char[] ch = s.toCharArray();
+        while(index < N) {
+            switch(ch[index]) {
+                case '-':
+                    sign *= -1;
+                    index++;
+                    break;
+                case '(':
+                    index++;
+                    break;
+                case ')':
+                    TreeNode cur = deque.pop();
+                    TreeNode parent = deque.peek();
+                    if (parent.left ==  null) {
+                        parent.left = cur;
+                    } else {
+                        parent.right = cur;
+                    }
+                    index++;
+                    break;
+                default:
+                    int num = 0;
+                    while (index < N && ch[index] >= '0' && ch[index] <= '9') {
+                        num = num * 10 + (ch[index++] - '0');
+                    }
+                    TreeNode node = new TreeNode(num * sign);
+                    sign = 1;
+                    deque.push(node);
+                    break;
+            }
+        }
+        if (deque.isEmpty()) return null;
+        return deque.peek();
     }
 }
