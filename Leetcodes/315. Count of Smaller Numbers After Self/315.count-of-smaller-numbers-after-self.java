@@ -29,7 +29,45 @@
  * 
  */
 class Solution {
-    public List<Integer> countSmaller(int[] nums) {
+
+    static class ArgumentedTreeNode {
+        int segmentLeftCount;
+        int val;
+        ArgumentedTreeNode left;
+        ArgumentedTreeNode right;
         
+        public ArgumentedTreeNode(int value) {
+            val = value;
+        }
+    }
+
+    public List<Integer> countSmaller(int[] nums) {
+        List<Integer> res = new ArrayList<>();
+        if (nums == null || nums.length == 0) return res; 
+        ArgumentedTreeNode root = null;
+        for (int i = nums.length - 1; i >= 0; i--) {
+            root = insert(nums[i], root, 0, res);
+        }
+
+        return res;
+    }
+
+
+    private ArgumentedTreeNode insert(int num, ArgumentedTreeNode node, int prefixSum, List<Integer> res) {
+        if (node == null) {
+            res.add(0, prefixSum);
+            return new ArgumentedTreeNode(num);
+        }
+
+        
+        if (num >= node.val) {
+            // go right increase the prefix sum
+            node.right  = insert(num, node.right, prefixSum + node.segmentLeftCount + ((num > node.val) ? 1 : 0), res);
+        } else {
+            
+            node.segmentLeftCount++;
+            node.left = insert(num, node.left, prefixSum, res);
+        }
+        return node;
     }
 }
