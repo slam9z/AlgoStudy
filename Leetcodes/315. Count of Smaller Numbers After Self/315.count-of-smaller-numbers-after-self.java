@@ -59,7 +59,6 @@ class Solution {
             return new ArgumentedTreeNode(num);
         }
 
-        
         if (num >= node.val) {
             // go right increase the prefix sum
             node.right  = insert(num, node.right, prefixSum + node.segmentLeftCount + ((num > node.val) ? 1 : 0), res);
